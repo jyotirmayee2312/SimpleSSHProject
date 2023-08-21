@@ -1,0 +1,21 @@
+name: Run SSH Command
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up SSH
+      run: |
+        echo "$SSH_PRIVATE_KEY" > private_key.pem
+        chmod 600 private_key.pem
+
+    - name: Run SSH Command
+      run: |
+        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@13.233.108.31 'echo "Hello from GitHub Actions!"'
+
