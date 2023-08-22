@@ -1,4 +1,4 @@
-name: Run SSH Command
+name: SSH into EC2 and Run Command
 
 on:
   push:
@@ -6,16 +6,19 @@ on:
       - main
 
 jobs:
-  deploy:
+  run_command:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Set up SSH
-      run: |
-        echo "$SSH_PRIVATE_KEY" > private_key.pem
-        chmod 600 private_key.pem
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-    - name: Run SSH Command
-      run: |
-        ssh -o StrictHostKeyChecking=no -i private_key.pem ubuntu@13.233.108.31 'echo "Hello from GitHub Actions!"'
-
+    - name: SSH into EC2 and run command
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        port: 22
+        script: |
+          echo "Hello from the remote server!"
