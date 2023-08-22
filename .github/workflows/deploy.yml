@@ -21,4 +21,5 @@ jobs:
         key: ${{ secrets.SSH_PRIVATE_KEY }}
         port: 22
         script: |
-          echo "Hello from the remote server!"
+          echo "Hello from the remote server!" > /path/to/hello.txt
+
